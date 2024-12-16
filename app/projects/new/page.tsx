@@ -1,9 +1,15 @@
 // import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 // import { cookies } from "next/headers";
+import { auth } from "@/auth";
 import { ProjectUpload } from "@/components/projects/ProjectUpload";
+import { redirect } from "next/navigation";
 // import { redirect } from "next/navigation";
 
 export default async function NewProjectPage() {
+  const session = await auth();
+  if (!session) {
+    redirect("/login");
+  }
   // const supabase = createServerComponentClient({ cookies });
 
   // const {

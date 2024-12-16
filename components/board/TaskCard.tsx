@@ -1,19 +1,17 @@
 import { useDraggable } from "@dnd-kit/core";
+import { Task } from "./types";
 
-interface Task {
-  id: string;
-  title: string;
-  description?: string;
-  status: string;
-}
+// interface TaskCardProps {
+//   task: Task;
+// }
 
-interface TaskCardProps {
-  task: Task;
-}
-
-export function TaskCard({ task }: TaskCardProps) {
+export function TaskCard({ task }: { task: Task }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: task.id,
+    data: {
+      type: "Task",
+      task: task,
+    },
   });
 
   const style = transform

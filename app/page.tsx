@@ -1,4 +1,9 @@
+"use client";
+import { useAuth } from "@/hooks/useAuth";
+import Link from "next/link";
+
 export default function Home() {
+  const { isAuthenticated } = useAuth();
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-8 max-w-6xl mx-auto">
       <main className="flex flex-col items-center text-center space-y-12">
@@ -54,18 +59,21 @@ export default function Home() {
             Everyone on the same page, powered by AI.
           </p>
           <div className="flex gap-4 flex-col sm:flex-row justify-center">
-            <a
-              className="px-8 py-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-              href="/chat/chat-1"
-            >
-              Get Started
-            </a>
-            <a
-              className="px-8 py-3 rounded-lg border border-input hover:bg-accent transition-colors"
-              href="/board/project-1"
-            >
-              View Demo
-            </a>
+            {isAuthenticated ? (
+              <Link
+                className="px-8 py-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                href="/chat"
+              >
+                Go to Dashboard
+              </Link>
+            ) : (
+              <Link
+                className="px-8 py-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                href="/login"
+              >
+                Get Started
+              </Link>
+            )}
           </div>
         </div>
       </main>

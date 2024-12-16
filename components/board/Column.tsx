@@ -1,22 +1,19 @@
 import { useDroppable } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Column as IColumn } from "./types";
 
-interface Column {
-  id: string;
-  title: string;
-}
-
-interface ColumnProps {
-  column: Column;
+export function Column({
+  column,
+  children,
+}: {
+  column: IColumn;
   children: React.ReactNode;
-}
-
-export function Column({ column, children }: ColumnProps) {
+}) {
   const {
     attributes,
     listeners,
-    setNodeRef,
+    setNodeRef: setSortableRef,
     transform,
     transition,
     isDragging,
@@ -24,6 +21,15 @@ export function Column({ column, children }: ColumnProps) {
     id: column.id,
     data: {
       type: "Column",
+      column: column,
+    },
+  });
+
+  const { setNodeRef: setDroppableRef } = useDroppable({
+    id: column.id,
+    data: {
+      type: "Column",
+      column: column,
     },
   });
 
@@ -33,22 +39,26 @@ export function Column({ column, children }: ColumnProps) {
     opacity: isDragging ? 0.5 : 1,
   };
 
-  const { setNodeRef: setDroppableRef } = useDroppable({
-    id: column.id,
-    data: {
-      // Explicitly mark this as a droppable area
-      type: "droppable",
-    },
-  });
-
-  const combinedRef = (node: HTMLElement | null) => {
-    setNodeRef(node);
+  // const { setNodeRef: setDroppableRef } = useDroppable({
+  //   id: column.id,
+  //   data: {
+  //     type: "Column",
+  //     column_order: column.column_order,
+  //   },
+  // });
+  const setNodeRef = (node: HTMLElement | null) => {
+    setSortableRef(node);
     setDroppableRef(node);
   };
 
+  // const combinedRef = (node: HTMLElement | null) => {
+  //   setNodeRef(node);
+  //   setDroppableRef(node);
+  // };
+
   return (
     <div
-      ref={combinedRef}
+      ref={setNodeRef}
       style={style}
       className="w-80 bg-card rounded-lg p-4 touch-none border border-border"
     >

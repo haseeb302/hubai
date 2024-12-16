@@ -70,12 +70,12 @@ export function ChatList() {
           </SidebarHeader>
           <SidebarGroupContent>
             <SidebarMenu>
-              {conversations[project.id]?.map((conv) => (
+              {conversations[project.id]?.map((conv, idx) => (
                 <SidebarMenuItem key={conv.id}>
                   <Link href={`/chat/${conv.id}?projectId=${project.id}`}>
                     <SidebarMenuButton>
                       <MessageCircle className="h-4 w-4" />
-                      <span>Chat</span>
+                      <span>Chat {idx + 1}</span>
                     </SidebarMenuButton>
                   </Link>
                 </SidebarMenuItem>

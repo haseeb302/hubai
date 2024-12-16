@@ -17,6 +17,7 @@ import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -29,6 +30,7 @@ import {
 import { initialProjects, initialChats } from "@/lib/constants";
 import { ProjectsList } from "../projects/ProjectList";
 import { ChatList } from "../chat/ChatList";
+import { SignOutButton } from "../auth/SignOut";
 
 const routes = [
   {
@@ -40,13 +42,13 @@ const routes = [
   {
     label: "Chat",
     icon: MessageCircle,
-    href: "/chat/chat-1", // Updated to point to first chat
+    href: "/chat", // Updated to point to first chat
     color: "text-violet-500",
   },
   {
     label: "Board",
     icon: KanbanSquare,
-    href: "/board/project-1",
+    href: "/board",
     color: "text-orange-500",
   },
   // {
@@ -108,32 +110,15 @@ export function AppSidebar() {
           <SidebarGroup>
             <SidebarGroupLabel>Your Boards</SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
-                {initialProjects.map((project) => (
-                  <SidebarMenuItem key={project.name}>
-                    <Link href={project.id}>
-                      <SidebarMenuButton
-                        className={cn(
-                          "w-full",
-                          pathname === project.id
-                            ? "bg-gray-100 dark:bg-gray-800"
-                            : "transparent"
-                        )}
-                      >
-                        <LayoutDashboard />
-                        {/* <project.icon className="h-4 w-4" /> */}
-                        <span>{project.name}</span>
-                      </SidebarMenuButton>
-                    </Link>
-                  </SidebarMenuItem>
-                ))}
-                <SidebarMenuItem>
+              <ProjectsList slug={"board"} />
+              <SidebarMenuItem>
+                <Link href={`/projects/new`}>
                   <SidebarMenuButton>
                     <Plus className="h-4 w-4" />
-                    <span>New Board</span>
+                    <span>New Project</span>
                   </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
+                </Link>
+              </SidebarMenuItem>
             </SidebarGroupContent>
           </SidebarGroup>
         )}
@@ -149,16 +134,22 @@ export function AppSidebar() {
           <SidebarGroup>
             <SidebarGroupLabel>Your Projects</SidebarGroupLabel>
             <SidebarGroupContent>
-              <ProjectsList />
+              <ProjectsList slug={"projects"} />
             </SidebarGroupContent>
           </SidebarGroup>
         )}
-
-        {/* Theme Toggle */}
-        <div className="flex items-center px-3 py-2 mt-auto">
-          <ThemeToggle iconOnly={!open} />
-        </div>
       </SidebarContent>
+
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <ThemeToggle iconOnly={!open} />
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SignOutButton iconOnly={!open} />
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

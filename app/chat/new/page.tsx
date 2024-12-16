@@ -1,11 +1,16 @@
 import { redirect } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { auth } from "@/auth";
 
 export default async function NewChatPage({
   searchParams,
 }: {
   searchParams: { projectId: string };
 }) {
+  const session = await auth();
+  if (!session) {
+    redirect("/login");
+  }
   // Create a new conversation with a hardcoded user ID
   const { data: conversation, error } = await supabase
     .from("conversations")

@@ -2,13 +2,17 @@ export interface Task {
   id: string;
   title: string;
   description?: string;
-  status: string;
+  column_id: string;
+  task_order: number;
+  project_id: string;
+  created_by: string;
 }
 
 export interface Column {
   id: string;
   title: string;
-  order: number;
+  column_order: number;
+  project_id: string;
 }
 
 export interface Project {

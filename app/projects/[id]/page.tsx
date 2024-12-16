@@ -1,8 +1,17 @@
+import { auth } from "@/auth";
 import { ProjectManager } from "@/components/projects/ProjectManager";
 import { supabase } from "@/lib/supabase";
 import { redirect } from "next/navigation";
 
-export default async function ProjectPage({ params }) {
+export default async function ProjectPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const session = await auth();
+  if (!session) {
+    redirect("/login");
+  }
   const { id } = await params;
   console.log("id", id);
   const { data: project } = await supabase

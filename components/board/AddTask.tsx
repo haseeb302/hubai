@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
+import { Task } from "./types";
 
 interface AddTaskProps {
   columnId: string;
-  onAdd: (task: { title: string; description: string; status: string }) => void;
+  onAdd: (columnId: string, task: Partial<Task>) => void;
 }
 
 export function AddTask({ columnId, onAdd }: AddTaskProps) {
@@ -18,10 +19,9 @@ export function AddTask({ columnId, onAdd }: AddTaskProps) {
 
     if (!title.trim()) return;
 
-    onAdd({
+    onAdd(columnId, {
       title: title.trim(),
       description: description.trim(),
-      status: columnId,
     });
 
     setTitle("");

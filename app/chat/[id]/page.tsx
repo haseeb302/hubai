@@ -1,4 +1,6 @@
+import { auth } from "@/auth";
 import { ChatInterface } from "@/components/chat/ChatInterface";
+import { redirect } from "next/navigation";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -6,6 +8,10 @@ interface PageProps {
 }
 
 export default async function ChatPage({ params, searchParams }: PageProps) {
+  const session = await auth();
+  if (!session) {
+    redirect("/login");
+  }
   const { id } = await params;
   const { projectId } = await searchParams;
   if (id && projectId) {

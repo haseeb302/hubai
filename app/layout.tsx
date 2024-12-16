@@ -5,6 +5,8 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/store/ThemeProvider";
 import { cn } from "@/lib/utils";
 import { AppSidebar } from "@/components/layout/AppSidebar";
+import { AuthProvider } from "@/store/AuthProvider";
+import { auth } from "@/auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,11 +15,12 @@ export const metadata: Metadata = {
   description: "AI-powered project management platform",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -36,14 +39,20 @@ export default function RootLayout({
         />
       </head>
       <body className={cn(inter.className, "bg-background text-foreground")}>
-        <ThemeProvider>
-          <SidebarProvider>
-            <AppSidebar />
-            <main className="flex-1 bg-background">
-              <SidebarTrigger /> {children}
-            </main>
-          </SidebarProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            {session ? (
+              <SidebarProvider>
+                <AppSidebar />
+                <main className="flex-1 bg-background">
+                  <SidebarTrigger /> {children}
+                </main>
+              </SidebarProvider>
+            ) : (
+              children
+            )}
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

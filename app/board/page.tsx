@@ -1,6 +1,17 @@
 // import { Board } from "@/components/board/Board";
 // import { initialProjects } from "@/lib/constants";
 
-// export default function BoardIndexPage() {
-//   return <Board projectId={initialProjects[0].id} />;
-// }
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+
+export default async function BoardIndexPage() {
+  const session = await auth();
+  if (!session) {
+    redirect("/login");
+  }
+  return (
+    <div className="h-full">
+      {/* <ChatInterface projectId={params.projectId} chatId={params.chatId} /> */}
+    </div>
+  );
+}
